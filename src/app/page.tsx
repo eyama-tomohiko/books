@@ -1,31 +1,15 @@
 "use client";
-import { useState } from "react";
-import { RecoilRoot, atom, useRecoilValue } from "recoil";
+import { MyBooks } from "@/app/components/atom";
+import { useRecoilValue } from "recoil";
 
-export default function Home() {
-  return (
-    <RecoilRoot>
-      <BooksList />
-    </RecoilRoot>
-  );
+export default function List() {
+  return <BooksList />;
 
   function BooksList() {
-    const [data, setData] = useState<BookListResponseAll | undefined>(
-      undefined
-    );
-    const fetchBooks = async (): Promise<BookListResponseAll> => {
-      const res = await fetch("https://dev-app-api.abceed.com/mock/book/all");
-      return res.json();
-    };
-    fetchBooks().then((val) => setData(val));
-    const myBooksState = atom<BookListResponseAll>({
-      key: "items",
-      default: data,
-    });
-    const myBooks = useRecoilValue(myBooksState);
+    const myBooks: BookListResponseAll = useRecoilValue(MyBooks);
     const list: BookListResponse[] =
       myBooks && myBooks["top_category_list"]
-        ? myBooks["top_category_list"].filter((d) => {
+        ? myBooks["top_category_list"].filter((d: BookListResponse) => {
             return d["id_top_category"] === "_top";
           })
         : [];
