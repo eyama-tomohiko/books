@@ -4,6 +4,8 @@ type Book = {
   publisher: string;
   author: string;
   img_url: string;
+  is_unlimited: boolean;
+  is_my_book?: boolean;
 };
 
 type BookList = {

@@ -8,9 +8,17 @@ export const myBooksState = atom<BookListResponseAll>({
 });
 
 export const MyBooks = selector({
-  key: "items",
-  get: async () => {
-    const res = await fetch("https://dev-app-api.abceed.com/mock/book/all");
-    return res.json();
+  key: "itemsKey",
+  get: async ({ get }) => {
+    const state = get(myBooksState);
+    if (state) {
+      return state;
+    } else {
+      const res = await fetch("https://dev-app-api.abceed.com/mock/book/all");
+      return res.json();
+    }
+  },
+  set: ({ set }, newValue) => {
+    set(myBooksState, newValue);
   },
 });

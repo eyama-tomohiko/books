@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useRecoilValue } from "recoil";
 
 import { MyBooks } from "@/app/components/atom";
@@ -39,14 +41,18 @@ export default function List() {
       <>
         {books.map((data) => {
           return (
-            <div key={data["id_book"]} className="mr-3 pb-3">
+            <Link
+              href={`/${data["id_book"]}`}
+              key={data["id_book"]}
+              className="mr-3 pb-3"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={data["img_url"]}
                 alt={data["name_book"]}
                 className="w-[90px] max-w-[none] shadow-md"
               />
-            </div>
+            </Link>
           );
         })}
       </>
