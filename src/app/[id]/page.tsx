@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { useRecoilState } from "recoil";
 
@@ -57,8 +58,21 @@ export default function Article({ params }: { params: { id: string } }) {
           .find((d: Book) => d["id_book"] === params.id) || ({} as Book)
       : ({} as Book);
 
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const ua = window.navigator.userAgent.toLowerCase();
+    console.log("darkMode", ua);
+
+    if (ua.indexOf("windows nt") !== -1) {
+      setDarkMode(true);
+    } else {
+      setDarkMode(false);
+    }
+  }, []);
+
   return (
-    <div className="p-3">
+    <div className={`p-3 ${darkMode ? "bg-[#212121]" : ""}`}>
       <Link href="/" className="ml-3">
         <span className="relative mr-6 inline-block h-[18px] w-2.5 align-text-top before:absolute before:left-0 before:top-[calc(50%_-_1px)] before:h-0.5 before:w-[13.3px] before:origin-[1px_50%] before:rotate-45 before:transform before:rounded-full before:bg-[#929292] before:content-[''] after:absolute after:left-0 after:top-[calc(50%_-_1px)] after:h-0.5 after:w-[13.3px] after:origin-[1px_50%] after:-rotate-45 after:transform after:rounded-full after:bg-[#929292] after:content-['']" />
         <span>書籍詳細</span>
