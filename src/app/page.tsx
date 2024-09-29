@@ -1,6 +1,8 @@
 "use client";
-import { MyBooks } from "@/app/components/atom";
+
 import { useRecoilValue } from "recoil";
+
+import { MyBooks } from "@/app/components/atom";
 
 export default function List() {
   return <BooksList />;
@@ -19,7 +21,7 @@ export default function List() {
         {list.map((data) => {
           return data["sub_category_list"].map((subCategorylistData) => (
             <>
-              <h1 className="text-xl font-bold py-3">
+              <h1 className="py-3 text-xl font-bold">
                 {subCategorylistData["name_category"]}
               </h1>
               <div className="flex overflow-x-scroll">
