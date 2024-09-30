@@ -6,37 +6,33 @@ import { useRecoilValue } from "recoil";
 
 import { MyBooks } from "@/app/components/atom";
 
-export default function List() {
-  return <BooksList />;
+export default function List(): JSX.Element {
+  const myBooks: BookListResponseAll = useRecoilValue(MyBooks);
+  const list: BookListResponse[] =
+    myBooks && myBooks["top_category_list"]
+      ? myBooks["top_category_list"].filter((d: BookListResponse) => {
+          return d["id_top_category"] === "_top";
+        })
+      : [];
 
-  function BooksList() {
-    const myBooks: BookListResponseAll = useRecoilValue(MyBooks);
-    const list: BookListResponse[] =
-      myBooks && myBooks["top_category_list"]
-        ? myBooks["top_category_list"].filter((d: BookListResponse) => {
-            return d["id_top_category"] === "_top";
-          })
-        : [];
+  return (
+    <div className="p-3">
+      {list.map((data) => {
+        return data["sub_category_list"].map((subCategorylistData) => (
+          <>
+            <h1 className="py-3 text-lg font-bold">
+              {subCategorylistData["name_category"]}
+            </h1>
+            <div className="flex overflow-x-scroll">
+              <Books books={subCategorylistData["book_list"]} />
+            </div>
+          </>
+        ));
+      })}
+    </div>
+  );
 
-    return (
-      <>
-        {list.map((data) => {
-          return data["sub_category_list"].map((subCategorylistData) => (
-            <>
-              <h1 className="py-3 text-xl font-bold">
-                {subCategorylistData["name_category"]}
-              </h1>
-              <div className="flex overflow-x-scroll">
-                <Books books={subCategorylistData["book_list"]} />
-              </div>
-            </>
-          ));
-        })}
-      </>
-    );
-  }
-
-  function Books({ books }: { books: Book[] }) {
+  function Books({ books }: { books: Book[] }): JSX.Element {
     return (
       <>
         {books.map((data) => {
